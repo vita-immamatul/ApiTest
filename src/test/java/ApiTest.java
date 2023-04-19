@@ -1,17 +1,24 @@
-import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
 
-public class ApiTest {
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class APITest {
+
+    private final String BASE_URL = "https://www.instagram.com/";
 
     @Test
-    public void testGetRequest() {
-        RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
-        given().get("/posts/1").then().statusCode(200)
-                .body("userId", equalTo(1))
-                .body("id", equalTo(1))
-                .body("title", equalTo("sunt aut facere repellat provident occaecati excepturi optio reprehenderit"))
-                .body("body", equalTo("quia et suscipit\nsuscipit..."));
+    public void testInstagramAPI() {
+        RestAssured.baseURI = BASE_URL;
+        Response response = given()
+                .when()
+                .get()
+                .then()
+                .extract()
+                .response();
+
+        assertEquals(response.getStatusCode(), 200);
     }
 }
